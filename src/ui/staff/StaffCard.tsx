@@ -1,16 +1,41 @@
-import { StyleSheet } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Staff } from "../../types/staff";
 
 // TODO: Make a Props type for the props of our StaffCard component
+type Props = {
+  person: Staff;
+};
 
 // TODO: Make a FunFact component that takes an optional text prop (no need for a type for this prop, just use inline typing)
 // This prop is a helper that will render null if no text is provided or if the text is an empty string (or only whitespace, use .trim() to check).
 // If there is text, render a Text component with the style styles.funFact that displays "Fun fact: " followed by the text prop.
+function FunFact({ text }: { text?: string }) {
+  if (!text || text.trim() === "") {
+    return null;
+  }
+  return <Text style={styles.funFact}>Fun fact: {text}</Text>;
+}
 
-export default function StaffCard(/*TODO: Add props here (use desctructuring)*/) {
-  // TODO: Use descructuring to extract values from the person
+export default function StaffCard({ person }: Props) {
+  // TODO: Use destructuring to extract values from the person
   // If values need to be modified or altered for display (ex: a default value added if no office is specified),
   // you can do that directly in the tsx code below, or create new variables here
   // if the values will be used in the log function as well, create variables for them here
+  const {
+    name,
+    role,
+    school,
+    officeLocation,
+    startYear,
+    courseIds,
+    specialties,
+    funFact,
+  } = person;
+
+  const officeDisplay = officeLocation || "N/A";
+  const coursesDisplay =
+    courseIds && courseIds.length > 0 ? courseIds.join(", ") : "N/A";
+  const specialtiesDisplay = specialties.slice(0, 3).join(", ");
 
   // TODO: Create a function called logStaffInfo that logs a formatted summary of the staff member to the console
   // Example output:
@@ -19,6 +44,19 @@ export default function StaffCard(/*TODO: Add props here (use desctructuring)*/)
   // Teaches: CPRG 101, CPRG 202 (once the field has been added)
   // Specialties: Web Development, Mobile Development, UI/UX Design
   // Fun fact: I once climbed Mount Everest.
+  function logStaffInfo() {
+    console.log(
+      `Staff: ${name} | ${role} | ${school} | Office: ${officeDisplay}`,
+    );
+    if (startYear) {
+      console.log(`Started: ${startYear}`);
+    }
+    console.log(`Teaches: ${coursesDisplay}`);
+    console.log(`Specialties: ${specialtiesDisplay}`);
+    if (funFact) {
+      console.log(`Fun fact: ${funFact}`);
+    }
+  }
 
   // TODO: Create the TSX for the staff card layout
   // There should be a Pressable as the root element, with onPress set to the logStaffInfo function created above
@@ -32,7 +70,20 @@ export default function StaffCard(/*TODO: Add props here (use desctructuring)*/)
   // A Text for the courses they teach (or "Teaches: N/A" if none are specified) (once that field has been added to the Staff interface)
   // A Text for the specialties (display only the first three specialties, separated by commas)
   // The FunFact component created above, passing in the fun fact text
-  return null;
+  return (
+    <Pressable style={styles.card} onPress={logStaffInfo}>
+      <View style={styles.topRow}>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.badge}>{role}</Text>
+      </View>
+      <Text style={styles.meta}>{school}</Text>
+      <Text style={styles.meta}>Office: {officeDisplay}</Text>
+      {startYear && <Text style={styles.meta}>Started: {startYear}</Text>}
+      <Text style={styles.meta}>Teaches: {coursesDisplay}</Text>
+      <Text style={styles.meta}>Specialties: {specialtiesDisplay}</Text>
+      <FunFact text={funFact} />
+    </Pressable>
+  );
 }
 
 const styles = StyleSheet.create({
