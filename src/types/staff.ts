@@ -4,7 +4,11 @@ import { School } from "./common";
 export type StaffId = string;
 
 // TODO: Create a type for staff roles, which can be "Instructor", "Program Chair", "Coordinator", or "Advisor"
-export type StaffRole = "Instructor" | "Program Chair" | "Coordinator" | "Advisor";
+export type StaffRole =
+  | "Instructor"
+  | "Program Chair"
+  | "Coordinator"
+  | "Advisor";
 // TODO: Create an interface for staff members
 // The interface should include the following properties:
 // an id (hint: use the StaffId type created above)
@@ -16,9 +20,10 @@ export type StaffRole = "Instructor" | "Program Chair" | "Coordinator" | "Adviso
 // an optional start year
 // an array of specialties
 // an optional fun fact
+// eslint-disable-next-line import/export
 export interface Staff {
   id: StaffId;
-  name: string; 
+  name: string;
   role: StaffRole;
   school: School;
   officeLocation?: string;
@@ -31,6 +36,7 @@ export interface Staff {
 // once all group members have completed their sections, add the following field:
 // an optional array of course ids that this staff member teaches
 
+// eslint-disable-next-line import/export
 export interface Staff {
   courseIds?: string[];
 }
